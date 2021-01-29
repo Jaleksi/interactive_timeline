@@ -30,13 +30,13 @@ const INFO = {
             },
             {
                 "place": "Lukio",
-                "from": "2019-05-01",
+                "from": "2019-01-01",
                 "to": "2019-12-01",
                 "description": "Aloitin koulun täällä silloin ja opiskelin tätä ja sitä ja kävin näitä kursseja ja sain tällaisia arvosanoja"
             },
             {
                 "place": "Yliopisto",
-                "from": "2020-05-01",
+                "from": "2020-01-01",
                 "to": "2021-07-01",
                 "description": "Aloitin koulun täällä silloin ja opiskelin tätä ja sitä ja kävin näitä kursseja ja sain tällaisia arvosanoja"
             }
@@ -62,7 +62,7 @@ const INFO = {
             },
             {
                 "place": "Työpaikka 4",
-                "from": "2020-12-01",
+                "from": "2021-01-01",
                 "to": "2021-07-01",
                 "description": "Tein tässä työpaikassa tällaisia juttuja ja opin tällaisia asioita ja eniten pidin tästä ja tuosta ja joskus tein myös tällaisia asioita"
             }

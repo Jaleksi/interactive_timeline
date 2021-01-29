@@ -35,7 +35,7 @@ const createYearScale = (minDate, maxDate) => {
 
     const minYear = new Date(minDate).getFullYear();
     const maxYear = new Date(maxDate).getFullYear() + 1;
-    const yearDivWidth = 100 / (maxYear - minYear) + "%";
+    const yearDivWidth = 100 / ((maxYear - minYear) * 2) + "%";
 
     for(let year=minYear; year<maxYear; year++){
         const yearElement = Object.assign(document.createElement("p"), {
@@ -44,6 +44,13 @@ const createYearScale = (minDate, maxDate) => {
         yearElement.innerHTML = year;
         yearElement.style.width = yearDivWidth;
         yearDiv.appendChild(yearElement);
+
+        const dividerElement = Object.assign(document.createElement("p"), {
+            className: "yearElement"
+        })
+        dividerElement.innerHTML = "|";
+        dividerElement.style.width = yearDivWidth;
+        yearDiv.appendChild(dividerElement);
     }
 }
 
@@ -69,7 +76,7 @@ const createLocationBar = (dataTitle, minDate, maxDate) => {
         });
         itemDiv.style.minWidth = calculateTimeLineItemWidth(item, minDate, maxDate);
         itemDiv.style.left = calculateTimeLineItemLeft(item, minDate, maxDate);
-        itemDiv.style.backgroundColor = getColor(item.place);
+        itemDiv.style.backgroundColor = item.bg = getColor(item.place);
         locBar.appendChild(itemDiv);
     });
 
@@ -80,17 +87,28 @@ const createLocationBar = (dataTitle, minDate, maxDate) => {
 const displayItemInfo = (ev) => {
     const data = ev.target.data;
     const infoSection = document.getElementById("info_section");
-    infoSection.innerHTML = data.place + "<br>" + data.from + " / " + data.to + "<br>" + data.description;
+    const infoSection2 = document.getElementById("second_info_section");
+
+    infoSection.classList.add("hovered");
+    infoSection2.classList.add("hovered");
+    infoSection.style.backgroundColor = ev.target.data.bg;
+    infoSection2.style.backgroundColor = ev.target.data.bg;
+    infoSection.innerHTML = `${data.place}<br>${data.from}${data.to}`;
+    infoSection2.innerHTML = data.description;
 }
 
-const closeItemInfo = (itemDiv) => {
+const closeItemInfo = (ev) => {
     const infoSection = document.getElementById("info_section");
+    const infoSection2 = document.getElementById("second_info_section");
     infoSection.innerHTML = "";
+    infoSection2.innerHTML = "";
+    infoSection.classList.remove("hovered");
+    infoSection2.classList.remove("hovered");
 
 }
 
 window.onload = () => {
-    setHeader();
+    //setHeader();
     const [min, max] = dateScale(INFO.timelineData);
     createYearScale(min, max);
     ["locations", "education", "work"].forEach((subject) => {

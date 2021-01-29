@@ -1,6 +1,11 @@
 * {
     padding: 0;
     margin: 0;
+    background-color: #f8f1f1;
+}
+
+body {
+    overflow: hidden;
 }
 
 #name_header {
@@ -72,13 +77,42 @@
 
 #info_section {
     position: absolute;
-    background-color: orange;
-    left: 25%;
-    margin-top: 10%;
-    width: 50%;
-    height: 50%;
-    transition: 0.3s;
+    background-color: #f8f1f1;
+    left: 0;
+    margin-top: 15%;
+    width: 0;
+    height: 10%;
+    border-top-right-radius: 20px;
+    text-align: center;
+    transition: all 0.3s linear;
+    font-size: 0px;
 }
+
+#info_section.hovered {
+    width: 90%;
+    font-size: 16px;
+}
+
+#second_info_section {
+    position: absolute;
+    background-color: #f8f1f1;
+    left: 100%;
+    margin-top: 25%;
+    width: 0;
+    height: 10%;
+    border-bottom-left-radius: 20px;
+    text-align: center;
+    transition: all 0.3s linear;
+    font-size: 0px;
+}
+
+#second_info_section.hovered {
+    width: 90%;
+    left: 10%;
+    font-size: 16px;
+
+}
+
 
 
 @media only screen and (max-width: 480px) {
