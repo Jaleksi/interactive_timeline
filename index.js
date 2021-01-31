@@ -1,8 +1,3 @@
-const setHeader = () => {
-    const header = document.getElementById("name_header");
-    header.innerHTML = INFO.name;
-}
-
 const dateScale = (data) => {
     let minDate = Infinity;
     let maxDate = -Infinity;
@@ -17,102 +12,73 @@ const dateScale = (data) => {
     return [minDate.getTime(), maxDate.getTime()];
 }
 
-const calculateTimeLineItemWidth = (item, min, max) => {
-    const itemTo = new Date(item.to).getTime();
-    const itemFrom = new Date(item.from).getTime();
+const calculateTimeLineItemWidth = (item_from, item_to, min, max) => {
+    let itemTo = new Date(item_to).getTime();
+    let itemFrom = new Date(item_from).getTime();
+    itemTo = itemTo < max ? itemTo : max;
+    itemFrom = itemFrom > min ? itemFrom : min;
     return (itemTo - itemFrom) / (max - min) * 100 + "%";
 }
 
-const calculateTimeLineItemLeft = (item, min, max) => {
-    const itemTo = new Date(item.to).getTime();
-    const itemFrom = new Date(item.from).getTime();
+const calculateTimeLineItemLeft = (item_from, min, max) => {
+    let itemFrom = new Date(item_from).getTime();
+    itemFrom = itemFrom > min ? itemFrom : min;
     return (itemFrom - min) / (max - min) * 100 + "%";
 }
 
 const createYearScale = (minDate, maxDate) => {
-    const yearDiv = document.getElementById("year_scale");
-    const timelineDiv = document.getElementById("timeline_container");
-
+    const yearScaleDiv = document.getElementById("yearScale");
     const minYear = new Date(minDate).getFullYear();
     const maxYear = new Date(maxDate).getFullYear() + 1;
-    const yearDivWidth = 100 / ((maxYear - minYear) * 2) + "%";
 
     for(let year=minYear; year<maxYear; year++){
-        const yearElement = Object.assign(document.createElement("p"), {
-            className: "yearElement"
+        const yearElement = Object.assign(document.createElement("div"), {
+            className: "yearScaleItem"
         })
+        yearElement.style.left = calculateTimeLineItemLeft(`${year}-01-01`, minDate, maxDate);
+        yearElement.style.width = calculateTimeLineItemWidth(`${year}-01-01`, `${year+1}-01-01`, minDate, maxDate);
         yearElement.innerHTML = year;
-        yearElement.style.width = yearDivWidth;
-        yearDiv.appendChild(yearElement);
-
-        const dividerElement = Object.assign(document.createElement("p"), {
-            className: "yearElement"
-        })
-        dividerElement.innerHTML = "|";
-        dividerElement.style.width = yearDivWidth;
-        yearDiv.appendChild(dividerElement);
+        yearScaleDiv.appendChild(yearElement);
     }
 }
 
-const createLocationBar = (dataTitle, minDate, maxDate) => {
-    const timelineContainer = document.getElementById("timeline_container");
-    const locBar = Object.assign(document.createElement("div"), {
-        id: dataTitle,
-        className: "timeline_bar"
-    });
-
-    const icon = Object.assign(document.createElement("img"), {
-        className: "icon",
-        src: `./icons/${dataTitle}.svg`,
-    });
-    document.getElementById("icons").appendChild(icon);
+const createTimelineBar = (dataTitle, minDate, maxDate) => {
+    const timelineBar = document.getElementById(dataTitle);
 
     INFO.timelineData[dataTitle].forEach((item) => {
         const itemDiv = Object.assign(document.createElement("div"), {
-            className: "timeline_item",
-            onmouseover: () => {displayItemInfo(event)},
-            onmouseleave: () => {closeItemInfo(event)},
-            data: item
+            className: "timelineItem",
+            onmouseover: () => {
+                const descText = `${item.place}<br>${item.from} / ${item.to}<br><br>${item.description}`;
+                updateDesc(item.bg, descText);
+            },
+            onmouseleave: () => {
+                updateDesc("black", "");
+            },
+            onclick : () => {
+                const descText = `${item.place}<br>${item.from} / ${item.to}<br><br>${item.description}`;
+                updateDesc(item.bg, descText);
+            }
         });
-        itemDiv.style.minWidth = calculateTimeLineItemWidth(item, minDate, maxDate);
-        itemDiv.style.left = calculateTimeLineItemLeft(item, minDate, maxDate);
+        itemDiv.style.minWidth = calculateTimeLineItemWidth(item.from, item.to, minDate, maxDate);
+        itemDiv.style.left = calculateTimeLineItemLeft(item.from, minDate, maxDate);
         itemDiv.style.backgroundColor = item.bg = getColor(item.place);
-        locBar.appendChild(itemDiv);
+        timelineBar.appendChild(itemDiv);
     });
 
-
-    timelineContainer.appendChild(locBar);
 }
 
-const displayItemInfo = (ev) => {
-    const data = ev.target.data;
-    const infoSection = document.getElementById("info_section");
-    const infoSection2 = document.getElementById("second_info_section");
-
-    infoSection.classList.add("hovered");
-    infoSection2.classList.add("hovered");
-    infoSection.style.backgroundColor = ev.target.data.bg;
-    infoSection2.style.backgroundColor = ev.target.data.bg;
-    infoSection.innerHTML = `${data.place}<br>${data.from}${data.to}`;
-    infoSection2.innerHTML = data.description;
-}
-
-const closeItemInfo = (ev) => {
-    const infoSection = document.getElementById("info_section");
-    const infoSection2 = document.getElementById("second_info_section");
-    infoSection.innerHTML = "";
-    infoSection2.innerHTML = "";
-    infoSection.classList.remove("hovered");
-    infoSection2.classList.remove("hovered");
-
+const updateDesc = (color, text) => {
+    const desc = document.getElementById("desc");
+    desc.style.backgroundColor = color;
+    desc.innerHTML = text;
 }
 
 window.onload = () => {
-    //setHeader();
     const [min, max] = dateScale(INFO.timelineData);
     createYearScale(min, max);
     ["locations", "education", "work"].forEach((subject) => {
-        createLocationBar(subject, min, max);
+        createTimelineBar(subject, min, max);
     })
 
 }

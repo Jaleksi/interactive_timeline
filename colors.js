@@ -10,5 +10,5 @@ const getColor = (name) => {
 }
 
 const randomColor = () => {
-    return "hsla(" + (Math.random() * 360) + ", 40%, 60%, 1)";
+    return "hsla(" + (Math.random() * 360) + ", 45%, 70%, 1)";
 }

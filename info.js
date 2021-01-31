@@ -4,7 +4,7 @@ const INFO = {
         "locations": [
             {
                 "place": "Suomi",
-                "from": "2018-01-01",
+                "from": "2017-08-01",
                 "to": "2019-09-01",
                 "description": "Muutin tänne täältä ja asuin täällä näin kauan koska siksi"
             },
@@ -35,7 +35,7 @@ const INFO = {
                 "description": "Aloitin koulun täällä silloin ja opiskelin tätä ja sitä ja kävin näitä kursseja ja sain tällaisia arvosanoja"
             },
             {
-                "place": "Yliopisto",
+                "place": "Ala-aste",
                 "from": "2020-01-01",
                 "to": "2021-07-01",
                 "description": "Aloitin koulun täällä silloin ja opiskelin tätä ja sitä ja kävin näitä kursseja ja sain tällaisia arvosanoja"
